@@ -1,36 +1,22 @@
-from csv import list_dialects
 from django.contrib import admin
-
-# Register your models here.
-
-from .models import *
-
-
-
+from .models import Category, ColorVariant, SizeVariant, Product, ProductImage
 
 admin.site.register(Category)
 
 class ProductImageAdmin(admin.StackedInline):
-    model =ProductImage
+    model = ProductImage
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['product_name' , 'price' ]
+    list_display = ['title', 'price', 'category']   # FIXED: product_name → title
     inlines = [ProductImageAdmin]
-
 
 @admin.register(ColorVariant)
 class ColorVariantAdmin(admin.ModelAdmin):
-    list_display = ['color_name' , 'price']
-    model = ColorVariant
+    list_display = ['color_name', 'price']
 
 @admin.register(SizeVariant)
 class SizeVariantAdmin(admin.ModelAdmin):
-    list_display = ['size_name' , 'price']
+    list_display = ['size_name', 'price']
 
-    model = SizeVariant
-
-
-admin.site.register(Product ,ProductAdmin)
-
-
+admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductImage)

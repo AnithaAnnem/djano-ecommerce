@@ -1,58 +1,65 @@
-from cmath import log
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import authenticate, login
 from .models import Profile
 
 
 def login_page(request):
+    if request.method == "POST":
+        username = request.POST.get("username") or request.POST.get("email")
+        password = request.POST.get("password")
 
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user_obj = User.objects.filter(username=email)
-
-        if not user_obj.exists():
-            messages.warning(request, 'Account not found.')
+        # User must exist
+        user_obj = User.objects.filter(username=username).first()
+        if not user_obj:
+            messages.error(request, "Invalid username.")
             return HttpResponseRedirect(request.path_info)
 
-        if not user_obj[0].profile.is_email_verified:
-            messages.warning(request, 'Your account is not verified.')
-            return HttpResponseRedirect(request.path_info)
+        # Authenticate
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect("/")
 
-        user_obj = authenticate(username=email, password=password)
-        if user_obj:
-            login(request, user_obj)
-            return redirect('/')
-
-        messages.warning(request, 'Invalid credentials')
+        messages.error(request, "Invalid credentials")
         return HttpResponseRedirect(request.path_info)
 
-    return render(request, 'accounts/login.html')
+    return render(request, "accounts/login.html")
 
 
 def register_page(request):
 
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user_obj = User.objects.filter(username=email)
+        first_name = request.POST.get('first_name', "") or ""
+        last_name = request.POST.get('last_name', "") or ""
 
-        if user_obj.exists():
-            messages.warning(request, 'Email is already taken.')
+        if not username or not email:
+            messages.error(request, "Username and email are required.")
             return HttpResponseRedirect(request.path_info)
 
-        print(email)
+        if User.objects.filter(username=username).exists():
+            messages.warning(request, 'Username already exists.')
+            return HttpResponseRedirect(request.path_info)
 
-        user_obj = User.objects.create(first_name=first_name, last_name=last_name, email=email, username=email)
-        user_obj.set_password(password)
-        user_obj.save()
+        if User.objects.filter(email=email).exists():
+            messages.warning(request, 'Email already exists.')
+            return HttpResponseRedirect(request.path_info)
 
-        messages.success(request, 'An email has been sent on your mail.')
+        # Create user
+        user_obj = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        messages.success(request, 'Account created successfully.')
         return HttpResponseRedirect(request.path_info)
 
     return render(request, 'accounts/register.html')
@@ -60,9 +67,9 @@ def register_page(request):
 
 def activate_email(request, email_token):
     try:
-        user = Profile.objects.get(email_token=email_token)
-        user.is_email_verified = True
-        user.save()
+        profile = Profile.objects.get(email_token=email_token)
+        profile.is_email_verified = True
+        profile.save()
         return redirect('/')
-    except Exception as e:
-        return HttpResponse('Invalid Email')
+    except Profile.DoesNotExist:
+        return HttpResponse("Invalid Email Activation Link")
