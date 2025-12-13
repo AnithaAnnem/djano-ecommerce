@@ -1,0 +1,9 @@
+steps:
+  - script: |
+      docker run -t \
+        owasp/zap2docker-stable \
+        zap-baseline.py -t https://yourapp.com -r zap_report.html
+    displayName: Run DAST Scan
+
+  - publish: zap_report.html
+    artifact: ZAPReport

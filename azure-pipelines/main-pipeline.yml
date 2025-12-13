@@ -1,0 +1,73 @@
+trigger:
+  - main
+
+variables:
+  - template: variables.yml
+
+stages:
+  - stage: Checkout
+    jobs:
+      - job: checkout
+        steps:
+          - template: templates/checkout.yml
+
+  - stage: InstallDependencies
+    jobs:
+      - job: install
+        steps:
+          - template: templates/install_dependencies.yml
+
+  - stage: BugAnalysis
+    jobs:
+      - job: bugAnalysis
+        steps:
+          - template: templates/bug_analysis.yml
+
+  - stage: CredentialScanning
+    jobs:
+      - job: credScan
+        steps:
+          - template: templates/cred_scanning.yml
+
+  - stage: StaticAnalysis
+    jobs:
+      - job: sonar
+        steps:
+          - template: templates/static_analysis.yml
+
+  - stage: UnitTesting
+    jobs:
+      - job: unitTests
+        steps:
+          - template: templates/unit_testing.yml
+
+  - stage: DependencyScanning
+    jobs:
+      - job: dependencyScan
+        steps:
+          - template: templates/dependency_scanning.yml
+
+  - stage: CodeCoverage
+    jobs:
+      - job: coverage
+        steps:
+          - template: templates/code_coverage.yml
+
+  - stage: DAST
+    jobs:
+      - job: dastScan
+        steps:
+          - template: templates/dast.yml
+
+  - stage: DockerBuild
+    jobs:
+      - job: buildDocker
+        steps:
+          - template: templates/docker_build.yml
+
+  - stage: QualityGates
+    dependsOn: StaticAnalysis
+    jobs:
+      - job: qualityGate
+        steps:
+          - template: templates/quality_gates.yml

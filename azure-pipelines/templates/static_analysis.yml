@@ -1,0 +1,14 @@
+steps:
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'Sonar-Service-Connection'
+      organization: $(sonarOrganization)
+      scannerMode: 'Other'
+      configMode: manual
+      cliProjectKey: $(sonarProjectKey)
+      cliProjectName: 'Django App'
+      extraProperties: |
+        sonar.python.coverage.reportPaths=coverage.xml
+
+  - script: sonar-scanner
+    displayName: Run Sonar Analysis

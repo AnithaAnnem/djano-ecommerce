@@ -1,0 +1,7 @@
+steps:
+  - task: Docker@2
+    inputs:
+      command: buildAndPush
+      repository: $(dockerRegistry)/$(dockerImageName)
+      dockerfile: Dockerfile
+      tags: 'latest'

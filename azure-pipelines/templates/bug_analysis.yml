@@ -1,0 +1,6 @@
+steps:
+  - script: |
+      pip install flake8 pylint
+      flake8 .
+      pylint $(Build.SourcesDirectory) --exit-zero
+    displayName: Bug Analysis

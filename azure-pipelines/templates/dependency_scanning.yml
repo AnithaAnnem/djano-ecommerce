@@ -1,0 +1,5 @@
+steps:
+  - script: |
+      pip install pip-audit
+      pip-audit
+    displayName: Dependency Scanning

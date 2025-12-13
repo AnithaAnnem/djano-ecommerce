@@ -1,0 +1,6 @@
+steps:
+  - script: |
+      pip install coverage
+      coverage run -m pytest
+      coverage xml
+    displayName: Code Coverage
