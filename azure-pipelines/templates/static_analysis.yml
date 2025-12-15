@@ -1,14 +1,19 @@
 steps:
   - task: SonarCloudPrepare@1
+    displayName: Prepare SonarCloud
     inputs:
       SonarCloud: 'Sonar-Service-Connection'
-      organization: $(sonarOrganization)
-      scannerMode: 'Other'
-      configMode: manual
-      cliProjectKey: $(sonarProjectKey)
-      cliProjectName: 'Django App'
+      organization: 'YOUR_SONARCLOUD_ORG_KEY'
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: 'django-ecommerce'
+      cliProjectName: 'django-ecommerce'
       extraProperties: |
+        sonar.sources=.
+        sonar.exclusions=**/.venv/**,**/venv/**,**/node_modules/**,**/migrations/**,**/static/**,**/media/**,**/__pycache__/**
+        sonar.tests=.
+        sonar.test.inclusions=**/tests/**
         sonar.python.coverage.reportPaths=coverage.xml
 
-  - script: sonar-scanner
-    displayName: Run Sonar Analysis
+  - task: SonarCloudAnalyze@1
+    displayName: Run SonarCloud Analysis

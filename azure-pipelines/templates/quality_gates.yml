@@ -1,4 +1,5 @@
 steps:
   - task: SonarCloudPublish@1
+    displayName: Publish Quality Gate Result
     inputs:
-      pollingTimeoutSec: '300'
+      pollingTimeoutSec: '120'
