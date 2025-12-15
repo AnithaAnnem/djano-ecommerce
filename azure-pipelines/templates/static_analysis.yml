@@ -1,7 +1,8 @@
 steps:
-- task: SonarQubePrepare@7
+- task: SonarCloudPrepare@1
   inputs:
-    SonarQube: 'Sonar-Service-Connection'
+    SonarCloud: 'Sonar-Service-Connection'
+    organization: 'AnithaAnnem'
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: 'django-ecommerce'
@@ -10,8 +11,8 @@ steps:
       sonar.sources=.
       sonar.python.coverage.reportPaths=coverage.xml
 
-- task: SonarQubeAnalyze@7
+- task: SonarCloudAnalyze@1
 
-- task: SonarQubePublish@7
+- task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
