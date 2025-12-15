@@ -1,5 +1,5 @@
 steps:
-- task: SonarQubePrepare@5
+- task: SonarQubePrepare@7
   inputs:
     SonarQube: 'Sonar-Service-Connection'
     scannerMode: 'CLI'
@@ -10,8 +10,8 @@ steps:
       sonar.sources=.
       sonar.python.coverage.reportPaths=coverage.xml
 
-- task: SonarQubeAnalyze@5
+- task: SonarQubeAnalyze@7
 
-- task: SonarQubePublish@5
+- task: SonarQubePublish@7
   inputs:
     pollingTimeoutSec: '300'
