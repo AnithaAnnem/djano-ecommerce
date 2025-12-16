@@ -2,30 +2,29 @@ steps:
   - script: |
       source $(Agent.ToolsDirectory)/venv/bin/activate
       pip install pip-audit
-      pip-audit \
-        --ignore-vuln PYSEC-2022-20 \
-        --ignore-vuln PYSEC-2022-19 \
-        --ignore-vuln PYSEC-2022-190 \
-        --ignore-vuln PYSEC-2022-191 \
-        --ignore-vuln PYSEC-2022-213 \
-        --ignore-vuln PYSEC-2022-245 \
-        --ignore-vuln PYSEC-2022-304 \
-        --ignore-vuln PYSEC-2023-13 \
-        --ignore-vuln PYSEC-2023-12 \
-        --ignore-vuln PYSEC-2023-61 \
-        --ignore-vuln PYSEC-2023-100 \
-        --ignore-vuln PYSEC-2023-222 \
-        --ignore-vuln PYSEC-2023-225 \
-        --ignore-vuln PYSEC-2023-226 \
-        --ignore-vuln PYSEC-2024-28 \
-        --ignore-vuln PYSEC-2024-47 \
-        --ignore-vuln CVE-2024-45231 \
-        --ignore-vuln CVE-2025-48432 \
-        --ignore-vuln CVE-2025-57833 \
-        --ignore-vuln CVE-2025-64458 \
-        --ignore-vuln CVE-2025-64459 \
-        --ignore-vuln CVE-2024-1135 \
-        --ignore-vuln CVE-2024-6827 \
-        --ignore-vuln CVE-2023-50447 \
-        --ignore-vuln CVE-2024-28219
+      pip-audit --ignore-vuln PYSEC-2022-20 \
+                 --ignore-vuln PYSEC-2022-19 \
+                 --ignore-vuln PYSEC-2022-190 \
+                 --ignore-vuln PYSEC-2022-191 \
+                 --ignore-vuln PYSEC-2022-213 \
+                 --ignore-vuln PYSEC-2022-245 \
+                 --ignore-vuln PYSEC-2022-304 \
+                 --ignore-vuln PYSEC-2023-13 \
+                 --ignore-vuln PYSEC-2023-12 \
+                 --ignore-vuln PYSEC-2023-61 \
+                 --ignore-vuln PYSEC-2023-100 \
+                 --ignore-vuln PYSEC-2023-222 \
+                 --ignore-vuln PYSEC-2023-225 \
+                 --ignore-vuln PYSEC-2023-226 \
+                 --ignore-vuln PYSEC-2024-28 \
+                 --ignore-vuln PYSEC-2024-47 \
+                 --ignore-vuln CVE-2024-45231 \
+                 --ignore-vuln CVE-2025-48432 \
+                 --ignore-vuln CVE-2025-57833 \
+                 --ignore-vuln CVE-2025-64458 \
+                 --ignore-vuln CVE-2025-64459 \
+                 --ignore-vuln CVE-2024-1135 \
+                 --ignore-vuln CVE-2024-6827 \
+                 --ignore-vuln CVE-2023-50447 \
+                 --ignore-vuln CVE-2024-28219
     displayName: "Dependency Scanning"
