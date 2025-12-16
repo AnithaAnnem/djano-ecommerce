@@ -1,5 +1,6 @@
 steps:
   - script: |
+      source $(Agent.ToolsDirectory)/venv/bin/activate
       pip install pip-audit
-      pip-audit
-    displayName: Dependency Scanning
+      pip-audit --config pip-audit.toml
+    displayName: "Dependency Scanning"
