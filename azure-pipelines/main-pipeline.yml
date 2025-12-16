@@ -4,6 +4,9 @@ trigger:
 pool:
   name: SelfHostedPool
 
+variables:
+  - group: SonarQubeSettings
+
 stages:
   - stage: Checkout
     displayName: Checkout Code
@@ -47,24 +50,24 @@ stages:
         steps:
           - template: templates/dependency_scanning.yml
 
-#  - stage: StaticAnalysis
-#    displayName: SonarCloud Analysis
-#    dependsOn:
-#      - UnitTesting
-#      - CodeCoverage
-#    jobs:
-#      - job: sonar
-#        steps:
-#         - template: templates/static_analysis.yml
+  - stage: StaticAnalysis
+    displayName: SonarQube Analysis
+    dependsOn:
+      - UnitTesting
+      - CodeCoverage
+    jobs:
+      - job: sonar
+        steps:
+          - template: templates/static_analysis.yml
 
-#  - stage: QualityGates
-#    displayName: Sonar Quality Gate (Non-blocking)
-#    dependsOn: StaticAnalysis
-#    condition: succeededOrFailed()
-#   jobs:
-#     - job: qualityGate
-#        steps:
-#         - template: templates/quality_gates.yml
+  - stage: QualityGates
+    displayName: Sonar Quality Gate (Non-blocking)
+    dependsOn: StaticAnalysis
+    condition: succeededOrFailed()
+    jobs:
+      - job: qualityGate
+        steps:
+          - template: templates/quality_gates.yml
 
   - stage: DockerBuild
     displayName: Docker Build
