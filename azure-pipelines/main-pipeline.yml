@@ -3,6 +3,9 @@ trigger:
 pool:
   name: SelfHostedPool
 
+pool:
+  name: SelfHostedPool
+
 stages:
   - stage: Checkout
     displayName: Checkout Code
