@@ -1,7 +1,5 @@
 trigger:
   - main
-pool:
-  name: SelfHostedPool
 
 pool:
   name: SelfHostedPool
