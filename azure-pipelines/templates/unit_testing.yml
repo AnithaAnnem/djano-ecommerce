@@ -1,5 +1,6 @@
+
 steps:
   - script: |
-      pip install pytest
+      source venv/bin/activate
       pytest
-    displayName: Run Unit Tests
+    displayName: "Run Unit Tests"
