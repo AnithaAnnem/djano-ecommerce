@@ -16,7 +16,7 @@ stages:
     jobs:
       - job: install
         steps:
-          - template: azure-pipelines/templates/install_dependencies.yml
+          - template: templates/install_dependencies.yml
 
   - stage: UnitTesting
     displayName: Unit Tests
