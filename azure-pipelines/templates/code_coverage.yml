@@ -1,6 +1,7 @@
 steps:
   - script: |
+      source $(Agent.ToolsDirectory)/venv/bin/activate
       pip install coverage
       coverage run -m pytest
       coverage xml
-    displayName: Code Coverage
+    displayName: "Code Coverage"
