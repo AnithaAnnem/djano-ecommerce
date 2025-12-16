@@ -5,13 +5,13 @@ steps:
     displayName: "Verify Python"
 
   - script: |
-      python3 -m venv venv
-      source venv/bin/activate
+      python3 -m venv $(Agent.ToolsDirectory)/venv
+      source $(Agent.ToolsDirectory)/venv/bin/activate
       pip install --upgrade pip
       pip install -r requirements.txt
     displayName: "Install Dependencies"
 
   - script: |
-      source venv/bin/activate
+      source $(Agent.ToolsDirectory)/venv/bin/activate
       pip list
     displayName: "Verify installed packages"
