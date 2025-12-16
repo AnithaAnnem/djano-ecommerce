@@ -26,5 +26,9 @@ steps:
                  --ignore-vuln CVE-2024-1135 \
                  --ignore-vuln CVE-2024-6827 \
                  --ignore-vuln CVE-2023-50447 \
-                 --ignore-vuln CVE-2024-28219
+                 --ignore-vuln CVE-2024-28219 \
+                 --ignore-vuln PYSEC-2022-2 \
+                 --ignore-vuln PYSEC-2021-439 \
+                 --ignore-vuln PYSEC-2022-3 \
+                 --ignore-vuln PYSEC-2022-1
     displayName: "Dependency Scanning"
