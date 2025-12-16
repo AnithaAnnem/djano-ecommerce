@@ -1,5 +1,5 @@
 steps:
   - script: |
-      source venv/bin/activate
+      source $(Agent.ToolsDirectory)/venv/bin/activate
       pytest
     displayName: "Run Unit Tests"
