@@ -1,22 +1,10 @@
 steps:
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'Sonar-Service-Connection'
-    organization: 'AnithaAnnem'
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: 'django-ecommerce'
-    cliProjectName: 'django-ecommerce'
-    extraProperties: |
-      sonar.sources=.
-      sonar.python.coverage.reportPaths=coverage.xml
-
-- task: SonarCloudAnalyze@1
-
-- task: SonarCloudPublish@1
-  inputs:
-<<<<<<< HEAD
-    pollingTimeoutSec: '300' 
-=======
-    pollingTimeoutSec: '300'
->>>>>>> 58c4a6a1913f0ef405beef7aef955c2f2bd87c2a
+  - script: |
+      sonar-scanner \
+        -Dsonar.projectKey=django-ecommerce \
+        -Dsonar.projectName=django-ecommerce \
+        -Dsonar.sources=. \
+        -Dsonar.python.coverage.reportPaths=coverage.xml \
+        -Dsonar.host.url=$(SONAR_HOST_URL) \
+        -Dsonar.login=$(SONAR_TOKEN)
+    displayName: "Run SonarQube Analysis"
