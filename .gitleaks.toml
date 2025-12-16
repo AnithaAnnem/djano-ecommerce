@@ -1,0 +1,5 @@
+title = "Custom Gitleaks Allowlist"
+
+[[allowlist]]
+description = "Ignore fake secrets in README"
+regex = '''cafebabe:deadbeef'''
