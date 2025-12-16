@@ -15,4 +15,3 @@ steps:
       source $(Agent.ToolsDirectory)/venv/bin/activate
       pip list
     displayName: "Verify installed packages"
-    displayName: "Verify installed packages"
