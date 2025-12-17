@@ -1,5 +1,3 @@
-# templates/docker_build.yml
-
 - task: Docker@2
   inputs:
     command: buildAndPush
@@ -10,11 +8,11 @@
   displayName: "Build & Push Docker Image"
 
 - script: |
-    echo "Logging into ACR with Docker..."
-    echo $(ACR_PASSWORD) | docker login $(dockerRegistry) -u $(ACR_USERNAME) --password-stdin
+      echo "Logging into ACR with Docker..."
+      echo $(ACR_PASSWORD) | docker login $(dockerRegistry) -u $(ACR_USERNAME) --password-stdin
   displayName: "ACR Docker Login"
 
 - script: |
-    echo "Running Trivy vulnerability scan..."
-    trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
+      echo "Running Trivy vulnerability scan..."
+      trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
   displayName: "Trivy Image Scan"
