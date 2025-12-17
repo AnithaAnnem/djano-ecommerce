@@ -6,8 +6,10 @@ pool:
 
 variables:
   - group: SonarQubeSettings
+  - group: Docker
 
 stages:
+
   - stage: Checkout
     displayName: Checkout Code
     jobs:
