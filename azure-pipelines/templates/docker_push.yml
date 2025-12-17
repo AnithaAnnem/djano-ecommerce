@@ -1,10 +1,11 @@
 steps:
+  - script: |
+      echo "dockerImageName=$(dockerImageName)"
   - task: Docker@2
     displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
-      containerRegistry: Django   # ACR Service Connection name
+      containerRegistry: Django
       repository: $(dockerImageName)
       dockerfile: Dockerfile
-      tags: |
-        latest
+      tags: latest
