@@ -2,7 +2,7 @@ steps:
   - task: Docker@2
     inputs:
       command: buildAndPush
-      containerRegistry: ACR-Django1
+      containerRegistry: Django
       repository: django1.azurecr.io/django
       dockerfile: Dockerfile
       tags: latest
