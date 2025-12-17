@@ -5,3 +5,9 @@ steps:
       repository: $(dockerRegistry)/$(dockerImageName)
       dockerfile: Dockerfile
       tags: 'latest'
+    displayName: "Build & Push Docker Image"
+
+  - script: |
+      echo "Running Trivy vulnerability scan..."
+      trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
+    displayName: "Trivy Image Scan"
