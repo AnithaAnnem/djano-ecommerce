@@ -72,11 +72,13 @@ stages:
           - template: templates/quality_gates.yml
 
   # -----------------------------------------
-  # 🚀 Stage 1: Build & Push Docker Image
+  # 🚀 Docker Build & Push (FIXED)
   # -----------------------------------------
   - stage: DockerBuild
     displayName: Docker Build & Push
     dependsOn: QualityGates
+    variables:                # 🔴 REQUIRED FIX
+      - group: Docker         # 🔴 REQUIRED FIX
     jobs:
       - job: buildDocker
         displayName: Build & Push Docker Image
@@ -84,11 +86,13 @@ stages:
           - template: templates/docker_push.yml
 
   # -----------------------------------------
-  # 🛡️ Stage 2: Trivy Scan (after push)
+  # 🛡️ Trivy Scan
   # -----------------------------------------
   - stage: TrivyScan
     displayName: Trivy Vulnerability Scan
     dependsOn: DockerBuild
+    variables:                # 🔴 SAME FIX FOR TRIVY
+      - group: Docker
     jobs:
       - job: scanDockerImage
         displayName: Scan Docker Image in ACR
