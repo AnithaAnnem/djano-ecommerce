@@ -1,8 +1,8 @@
 steps:
   - script: |
       sonar-scanner \
-        -Dsonar.projectKey=django-ecommerce \
-        -Dsonar.projectName=django-ecommerce \
+        -Dsonar.projectKey=django \
+        -Dsonar.projectName=django \
         -Dsonar.sources=. \
         -Dsonar.python.coverage.reportPaths=coverage.xml \
         -Dsonar.host.url=$(SONAR_HOST_URL) \
