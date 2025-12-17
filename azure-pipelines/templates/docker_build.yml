@@ -18,6 +18,14 @@ steps:
       dockerRegistry: $(dockerRegistry)
 
   - script: |
+      echo "Pulling image before scanning..."
+      docker pull "$dockerRegistry/$dockerImageName:latest"
+    displayName: "Pull Image for Trivy"
+    env:
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
+
+  - script: |
       echo "Running Trivy vulnerability scan..."
       trivy image --exit-code 1 --severity HIGH,CRITICAL "$dockerRegistry/$dockerImageName:latest"
     displayName: "Trivy Image Scan"
