@@ -6,8 +6,10 @@ pool:
 
 variables:
   - group: SonarQubeSettings
+  - group: Docker
 
 stages:
+
   - stage: Checkout
     displayName: Checkout Code
     jobs:
@@ -69,9 +71,26 @@ stages:
         steps:
           - template: templates/quality_gates.yml
 
+  # -----------------------------------------
+  # 🚀 Stage 1: Build & Push Docker Image
+  # -----------------------------------------
   - stage: DockerBuild
-    displayName: Docker Build
+    displayName: Docker Build & Push
+    dependsOn: QualityGates
     jobs:
       - job: buildDocker
+        displayName: Build & Push Docker Image
         steps:
-          - template: templates/docker_build.yml
+          - template: templates/docker_push.yml
+
+  # -----------------------------------------
+  # 🛡️ Stage 2: Trivy Scan (after push)
+  # -----------------------------------------
+  - stage: TrivyScan
+    displayName: Trivy Vulnerability Scan
+    dependsOn: DockerBuild
+    jobs:
+      - job: scanDockerImage
+        displayName: Scan Docker Image in ACR
+        steps:
+          - template: templates/trivy_scan.yml

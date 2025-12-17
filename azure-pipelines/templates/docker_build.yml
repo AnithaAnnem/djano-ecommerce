@@ -2,13 +2,41 @@ steps:
   - task: Docker@2
     inputs:
       command: buildAndPush
+      containerRegistry: Django
       repository: $(dockerRegistry)/$(dockerImageName)
       dockerfile: Dockerfile
-      tags: 'latest'
+      tags: latest
     displayName: "Build & Push Docker Image"
 
   - script: |
+      echo "Logging into ACR with Docker..."
+      echo "$ACR_PASSWORD" | docker login "$dockerRegistry" -u "$ACR_USERNAME" --password-stdin
+    displayName: "ACR Docker Login"
+    env:
+      ACR_USERNAME: $(ACR_USERNAME)
+      ACR_PASSWORD: $(ACR_PASSWORD)
+      dockerRegistry: $(dockerRegistry)
+
+  - script: |
+      echo "DEBUG: dockerRegistry='$dockerRegistry'"
+      echo "DEBUG: dockerImageName='$dockerImageName'"
+    displayName: "Debug Docker Variables"
+    env:
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
+
+  - script: |
+      echo "Pulling image before scanning..."
+      docker pull "$dockerRegistry/$dockerImageName:latest"
+    displayName: "Pull Image for Trivy"
+    env:
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
+
+  - script: |
       echo "Running Trivy vulnerability scan..."
-      trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
+      trivy image --exit-code 1 --severity HIGH,CRITICAL "$dockerRegistry/$dockerImageName:latest"
     displayName: "Trivy Image Scan"
-azureuser@Django:~$
+    env:
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
