@@ -1,13 +1,9 @@
-parameters:
-  dockerRegistry: ''
-  dockerImageName: ''
-
 steps:
   - task: Docker@2
     inputs:
       command: buildAndPush
       containerRegistry: Django
-      repository: ${{ parameters.dockerRegistry }}/${{ parameters.dockerImageName }}
+      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
       dockerfile: Dockerfile
       tags: latest
     displayName: "Build & Push Docker Image"
