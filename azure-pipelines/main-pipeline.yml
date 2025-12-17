@@ -62,6 +62,7 @@ stages:
 
   - stage: QualityGates
     displayName: Sonar Quality Gate (Non-blocking)
+    displayName: SonarQube Quality Gate Check
     dependsOn: StaticAnalysis
     condition: succeededOrFailed()
     jobs:
