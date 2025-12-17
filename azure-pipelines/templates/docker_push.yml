@@ -1,9 +1,9 @@
-steps:
-  - task: Docker@2
-    inputs:
-      command: buildAndPush
-      containerRegistry: Django
-      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
-      dockerfile: Dockerfile
-      tags: latest
-    displayName: "Build & Push Docker Image"
+- stage: DockerBuild
+  displayName: Docker Build & Push
+  jobs:
+    - job: buildDocker
+      steps:
+        - template: templates/docker_push.yml
+          parameters:
+            dockerRegistry: ${{ variables.dockerRegistry }}
+            dockerImageName: ${{ variables.dockerImageName }}
