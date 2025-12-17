@@ -77,13 +77,15 @@ stages:
   - stage: DockerBuild
     displayName: Docker Build & Push
     dependsOn: QualityGates
-    variables:                # 🔴 REQUIRED FIX
-      - group: Docker         # 🔴 REQUIRED FIX
     jobs:
       - job: buildDocker
         displayName: Build & Push Docker Image
         steps:
           - template: templates/docker_push.yml
+            parameters:
+              dockerRegistry: $(dockerRegistry)
+              dockerImageName: $(dockerImageName)
+
 
   # -----------------------------------------
   # 🛡️ Trivy Scan
