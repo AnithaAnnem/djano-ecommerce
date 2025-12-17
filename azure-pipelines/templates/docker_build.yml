@@ -9,6 +9,11 @@ steps:
     displayName: "Build & Push Docker Image"
 
   - script: |
+      echo "Logging into ACR..."
+      az acr login --name django1
+    displayName: "ACR Login"
+
+  - script: |
       echo "Running Trivy vulnerability scan..."
       trivy image --exit-code 1 --severity HIGH,CRITICAL django1.azurecr.io/django:latest
     displayName: "Trivy Image Scan"
