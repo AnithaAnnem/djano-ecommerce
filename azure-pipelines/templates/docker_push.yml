@@ -1,9 +1,10 @@
 steps:
   - task: Docker@2
+    displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
-      containerRegistry: Django
-      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
+      containerRegistry: Django   # ACR Service Connection name
+      repository: $(dockerImageName)
       dockerfile: Dockerfile
-      tags: latest
-    displayName: "Build & Push Docker Image"
+      tags: |
+        latest
