@@ -3,7 +3,7 @@ steps:
       echo "Checking SonarQube Quality Gate status..."
 
       STATUS=$(curl -s -u $(SONAR_TOKEN): \
-        "$(SONAR_HOST_URL)/api/qualitygates/project_status?projectKey=django-ecommerce" \
+        "$(SONAR_HOST_URL)/api/qualitygates/project_status?projectKey=django" \
         | jq -r '.projectStatus.status')
 
       echo "Quality Gate Status: $STATUS"
