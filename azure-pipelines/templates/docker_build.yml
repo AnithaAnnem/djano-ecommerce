@@ -13,30 +13,22 @@ steps:
       echo "$ACR_PASSWORD" | docker login "$dockerRegistry" -u "$ACR_USERNAME" --password-stdin
     displayName: "ACR Docker Login"
     env:
-      ACR_USERNAME: ${{ variables.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ variables.ACR_PASSWORD }}
-      dockerRegistry: ${{ variables.dockerRegistry }}
-
-  - script: |
-      echo "DEBUG: dockerRegistry='$dockerRegistry'"
-      echo "DEBUG: dockerImageName='$dockerImageName'"
-    displayName: "Debug Docker Variables"
-    env:
-      dockerRegistry: ${{ variables.dockerRegistry }}
-      dockerImageName: ${{ variables.dockerImageName }}
+      ACR_USERNAME: $(ACR_USERNAME)
+      ACR_PASSWORD: $(ACR_PASSWORD)
+      dockerRegistry: $(dockerRegistry)
 
   - script: |
       echo "Pulling image before scanning..."
       docker pull "$dockerRegistry/$dockerImageName:latest"
     displayName: "Pull Image for Trivy"
     env:
-      dockerRegistry: ${{ variables.dockerRegistry }}
-      dockerImageName: ${{ variables.dockerImageName }}
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
 
   - script: |
       echo "Running Trivy vulnerability scan..."
       trivy image --exit-code 1 --severity HIGH,CRITICAL "$dockerRegistry/$dockerImageName:latest"
     displayName: "Trivy Image Scan"
     env:
-      dockerRegistry: ${{ variables.dockerRegistry }}
-      dockerImageName: ${{ variables.dockerImageName }}
+      dockerRegistry: $(dockerRegistry)
+      dockerImageName: $(dockerImageName)
