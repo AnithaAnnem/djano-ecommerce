@@ -51,7 +51,7 @@ stages:
           - template: templates/dependency_scanning.yml
 
   - stage: StaticAnalysis
-    displayName: SonarQube Analysis
+    displayName: Static Analysis
     dependsOn:
       - UnitTesting
       - CodeCoverage
