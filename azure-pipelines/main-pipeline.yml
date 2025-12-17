@@ -75,14 +75,16 @@ stages:
   # 🚀 Stage 1: Build & Push Docker Image
   # -----------------------------------------
   - stage: DockerBuild
-  displayName: Docker Build & Push
-  jobs:
-    - job: buildDocker
-      steps:
-        - template: templates/docker_push.yml
-          parameters:
-            dockerRegistry: ${{ variables.dockerRegistry }}
-            dockerImageName: ${{ variables.dockerImageName }}
+    displayName: Docker Build & Push
+    dependsOn: QualityGates
+    jobs:
+      - job: buildDocker
+        displayName: Build & Push Docker Image
+        steps:
+          - template: templates/docker_push.yml
+            parameters:
+              dockerRegistry: ${{ variables.dockerRegistry }}
+              dockerImageName: ${{ variables.dockerImageName }}
 
   # -----------------------------------------
   # 🛡️ Stage 2: Trivy Scan (after push)
