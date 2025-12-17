@@ -2,13 +2,13 @@ steps:
   - task: Docker@2
     inputs:
       command: buildAndPush
-      repository: $(dockerRegistry)/$(dockerImageName)
+      containerRegistry: ACR-Django1
+      repository: django1.azurecr.io/django
       dockerfile: Dockerfile
-      tags: 'latest'
+      tags: latest
     displayName: "Build & Push Docker Image"
 
   - script: |
       echo "Running Trivy vulnerability scan..."
-      trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
+      trivy image --exit-code 1 --severity HIGH,CRITICAL django1.azurecr.io/django:latest
     displayName: "Trivy Image Scan"
-
