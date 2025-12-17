@@ -1,3 +1,12 @@
+# templates/docker_build.yml
+
+# Import variables from parent pipeline
+variables:
+  dockerRegistry: ${{ variables.dockerRegistry }}
+  dockerImageName: ${{ variables.dockerImageName }}
+  ACR_USERNAME: ${{ variables.ACR_USERNAME }}
+  ACR_PASSWORD: ${{ variables.ACR_PASSWORD }}
+
 steps:
   - task: Docker@2
     inputs:
