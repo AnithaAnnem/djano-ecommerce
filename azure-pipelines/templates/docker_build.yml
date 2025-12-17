@@ -10,10 +10,16 @@ steps:
 
   - script: |
       echo "Logging into ACR with Docker..."
-      echo $(ACR_PASSWORD) | docker login $(dockerRegistry) -u $(ACR_USERNAME) --password-stdin
+      echo "$ACR_PASSWORD" | docker login $(dockerRegistry) -u "$ACR_USERNAME" --password-stdin
     displayName: "ACR Docker Login"
+    env:
+      ACR_USERNAME: $(ACR_USERNAME)
+      ACR_PASSWORD: $(ACR_PASSWORD)
 
   - script: |
       echo "Running Trivy vulnerability scan..."
       trivy image --exit-code 1 --severity HIGH,CRITICAL $(dockerRegistry)/$(dockerImageName):latest
     displayName: "Trivy Image Scan"
+    env:
+      ACR_USERNAME: $(ACR_USERNAME)
+      ACR_PASSWORD: $(ACR_PASSWORD)
