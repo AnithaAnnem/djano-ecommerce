@@ -82,9 +82,6 @@ stages:
         displayName: Build & Push Docker Image
         steps:
           - template: templates/docker_push.yml
-            parameters:
-              dockerRegistry: ${{ variables.dockerRegistry }}
-              dockerImageName: ${{ variables.dockerImageName }}
 
   # -----------------------------------------
   # 🛡️ Stage 2: Trivy Scan (after push)
