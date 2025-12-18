@@ -5,8 +5,10 @@ pool:
   name: SelfHostedPool
 
 variables:
-  - group: SonarQubeSettings
-  - group: Docker
+  ACR_USERNAME: django1
+  dockerRegistry: django1.azurecr.io
+  dockerImageName: django
+  # ACR_PASSWORD is stored as a secret in the pipeline UI
 
 stages:
 
@@ -71,9 +73,9 @@ stages:
         steps:
           - template: templates/quality_gates.yml
 
-  # -----------------------------------------
+  # ---------------------------------------------------
   # 🚀 Docker Build & Push
-  # -----------------------------------------
+  # ---------------------------------------------------
   - stage: DockerBuild
     displayName: Docker Build & Push
     dependsOn: QualityGates
@@ -88,23 +90,17 @@ stages:
               echo "dockerImageName = '${{ variables.dockerImageName }}'"
             displayName: "DEBUG DOCKER VARIABLES"
 
-          # Sanitize the image name (optional but safe)
-          - bash: |
-              SANITIZED_IMAGE_NAME=$(echo "${{ variables.dockerImageName }}" \
-                | tr '[:upper:]' '[:lower:]' \
-                | sed 's/[^a-z0-9._-]/_/g' \
-                | sed 's|/|-|g')
+          # Login to ACR using your secret
+          - script: |
+              echo "$(ACR_PASSWORD)" | docker login ${{ variables.dockerRegistry }} -u $(ACR_USERNAME) --password-stdin
+            displayName: "Login to ACR"
 
-              echo "##vso[task.setvariable variable=sanitizedImageName;]$SANITIZED_IMAGE_NAME"
-              echo "Sanitized Image Name: $SANITIZED_IMAGE_NAME"
-            displayName: "Sanitize Docker Image Name"
-
-          # Use template (NO PARAMETERS)
+          # Build & Push using template
           - template: templates/docker_push.yml
 
-  # -----------------------------------------
+  # ---------------------------------------------------
   # 🛡️ Trivy Scan
-  # -----------------------------------------
+  # ---------------------------------------------------
   - stage: TrivyScan
     displayName: Trivy Vulnerability Scan
     dependsOn: DockerBuild
