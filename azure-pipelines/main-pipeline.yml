@@ -88,21 +88,19 @@ stages:
               echo "dockerImageName = '${{ variables.dockerImageName }}'"
             displayName: "DEBUG DOCKER VARIABLES"
 
-          # Sanitize the image name and set a new pipeline variable for downstream tasks
+          # Sanitize the image name (optional but safe)
           - bash: |
-              # Convert to lowercase, replace slashes with hyphens, and remove invalid characters
-              SANITIZED_IMAGE_NAME=$(echo "${{ variables.dockerImageName }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/_/g' | sed 's|/|-|g')
-              
-              # Output the new variable so it can be used by the Docker task
+              SANITIZED_IMAGE_NAME=$(echo "${{ variables.dockerImageName }}" \
+                | tr '[:upper:]' '[:lower:]' \
+                | sed 's/[^a-z0-9._-]/_/g' \
+                | sed 's|/|-|g')
+
               echo "##vso[task.setvariable variable=sanitizedImageName;]$SANITIZED_IMAGE_NAME"
               echo "Sanitized Image Name: $SANITIZED_IMAGE_NAME"
             displayName: "Sanitize Docker Image Name"
 
-          # Use template (no parameters needed)
+          # Use template (NO PARAMETERS)
           - template: templates/docker_push.yml
-            # Pass the new sanitized variable as a parameter to the template
-            parameters:
-              image_name_override: $(sanitizedImageName) # Use macro syntax for runtime access
 
   # -----------------------------------------
   # 🛡️ Trivy Scan
