@@ -1,13 +1,7 @@
-parameters:
-- name: image_name_override
-  type: string
-  default: ''
-
 steps:
   - script: |
       echo "Registry: ${{ variables.dockerRegistry }}"
       echo "Image: ${{ variables.dockerImageName }}"
-      echo "Override Image Name Parameter: ${{ parameters.image_name_override }}"
     displayName: Debug Docker Variables
 
   - task: Docker@2
@@ -15,6 +9,6 @@ steps:
     inputs:
       command: buildAndPush
       containerRegistry: Django
-      repository: ${{ variables.dockerRegistry }}/${{ parameters.image_name_override }}
+      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
       dockerfile: Dockerfile
       tags: latest
