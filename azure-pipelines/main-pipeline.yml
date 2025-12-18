@@ -72,7 +72,7 @@ stages:
           - template: templates/quality_gates.yml
 
   # -----------------------------------------
-  # 🚀 Docker Build & Push (FIXED)
+  # 🚀 Docker Build & Push
   # -----------------------------------------
   - stage: DockerBuild
     displayName: Docker Build & Push
@@ -81,11 +81,15 @@ stages:
       - job: buildDocker
         displayName: Build & Push Docker Image
         steps:
-          - template: templates/docker_push.yml
-            parameters:
-              dockerRegistry: $(dockerRegistry)
-              dockerImageName: $(dockerImageName)
 
+          # Debug to confirm variables are loaded
+          - script: |
+              echo "dockerRegistry = '${{ variables.dockerRegistry }}'"
+              echo "dockerImageName = '${{ variables.dockerImageName }}'"
+            displayName: "DEBUG DOCKER VARIABLES"
+
+          # Use template (no parameters needed)
+          - template: templates/docker_push.yml
 
   # -----------------------------------------
   # 🛡️ Trivy Scan
@@ -93,8 +97,6 @@ stages:
   - stage: TrivyScan
     displayName: Trivy Vulnerability Scan
     dependsOn: DockerBuild
-    variables:                # 🔴 SAME FIX FOR TRIVY
-      - group: Docker
     jobs:
       - job: scanDockerImage
         displayName: Scan Docker Image in ACR
