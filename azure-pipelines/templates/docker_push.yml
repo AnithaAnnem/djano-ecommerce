@@ -1,18 +1,14 @@
-parameters:
-  dockerRegistry: ''
-  dockerImageName: ''
-
 steps:
   - script: |
-      echo "Registry: ${{ parameters.dockerRegistry }}"
-      echo "Image: ${{ parameters.dockerImageName }}"
-    displayName: Debug Docker Parameters
+      echo "Registry: ${{ variables.dockerRegistry }}"
+      echo "Image: ${{ variables.dockerImageName }}"
+    displayName: Debug Docker Variables
 
   - task: Docker@2
     displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
       containerRegistry: Django
-      repository: ${{ parameters.dockerImageName }}
+      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
       dockerfile: Dockerfile
       tags: latest
