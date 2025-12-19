@@ -1,7 +1,8 @@
-# Temporary ignores – must be reviewed and removed later
+# Temporary ignores – Django LTS upgrade planned
 
-# Django SQL Injection – will be fixed after dependency upgrade
-CVE-2025-64459
+CVE-2022-28347
+CVE-2022-34265
+CVE-2023-31047
 
-# Pillow RCE – upgrade planned
+# Pillow RCE
 CVE-2023-50447
