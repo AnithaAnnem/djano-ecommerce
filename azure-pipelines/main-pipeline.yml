@@ -5,11 +5,17 @@ pool:
   name: SelfHostedPool
 
 variables:
+  # ACR credentials
   ACR_USERNAME: django1
-  dockerRegistry: django1.azurecr.io       # define directly or override in UI
-  dockerImageName: django                  # define directly or override in UI
-  # ACR_PASSWORD is stored as a secret in the pipeline UI
-  # SONAR_HOST_URL and SONAR_TOKEN are also defined in the pipeline UI
+  dockerRegistry: django1.azurecr.io
+  dockerImageName: django
+
+  # Secrets should be defined in the pipeline UI
+  ACR_PASSWORD: $(ACR_PASSWORD)
+  SONAR_TOKEN: $(SONAR_TOKEN)
+
+  # Non-secret variable can be defined inline
+  SONAR_HOST_URL: http://52.233.85.186:9000
 
 stages:
 
