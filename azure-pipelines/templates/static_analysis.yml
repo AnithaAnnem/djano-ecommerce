@@ -1,12 +1,8 @@
 steps:
-  # Debug step to confirm variables are injected
   - script: |
       echo "SONAR_HOST_URL = $SONAR_HOST_URL"
       echo "SONAR_TOKEN = $SONAR_TOKEN"
-    displayName: "DEBUG Sonar Variables"
 
-  # Run SonarQube Scanner with proper Bash variable expansion
-  - script: |
       sonar-scanner \
         -Dsonar.projectKey=django \
         -Dsonar.projectName=django \
