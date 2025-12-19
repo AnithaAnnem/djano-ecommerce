@@ -10,8 +10,9 @@ steps:
     inputs:
       command: buildAndPush
       containerRegistry: Django   # name of your ACR service connection
-      repository: $(dockerImageName)   # repo name only, service connection handles registry
+      repository: $(dockerImageName)
       dockerfile: Dockerfile
+      arguments: --no-cache       # 🔴 IMPORTANT
       tags: |
         latest
         $(Build.BuildId)
