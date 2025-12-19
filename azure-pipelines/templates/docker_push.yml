@@ -1,15 +1,15 @@
 steps:
   - script: |
-      echo "Registry: ${{ variables.dockerRegistry }}"
-      echo "Image: ${{ variables.dockerImageName }}"
+      echo "Registry: $dockerRegistry"
+      echo "Image: $dockerImageName"
     displayName: Debug Docker Variables
 
   - task: Docker@2
     displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
-      containerRegistry: Django
-      repository: ${{ variables.dockerRegistry }}/${{ variables.dockerImageName }}
+      containerRegistry: Django   # service connection name
+      repository: ${{ variables.dockerImageName }}   # just the repo name, not full registry
       dockerfile: Dockerfile
       tags: |
         latest
