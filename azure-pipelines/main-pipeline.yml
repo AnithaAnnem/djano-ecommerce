@@ -104,17 +104,8 @@ stages:
               command: login
               containerRegistry: Django   # name of your ACR service connection in DevOps
 
-          # Build & Push Docker Image
-          - task: Docker@2
-            displayName: Build & Push Docker Image
-            inputs:
-              command: buildAndPush
-              containerRegistry: Django   # same service connection name
-              repository: ${{ variables.dockerImageName }}
-              dockerfile: Dockerfile
-              tags: |
-                latest
-                $(Build.BuildId)
+          # Build & Push using template (docker_push.yml)
+          - template: templates/docker_push.yml
 
   # ---------------------------------------------------
   # 🛡️ Trivy Scan
