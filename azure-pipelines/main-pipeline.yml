@@ -6,8 +6,8 @@ pool:
 
 variables:
   ACR_USERNAME: django1
-  dockerRegistry: django1.azurecr.io
-  dockerImageName: django
+  dockerRegistry: $(dockerRegistry)       # defined in pipeline UI
+  dockerImageName: $(dockerImageName)     # defined in pipeline UI
   # ACR_PASSWORD is stored as a secret in the pipeline UI
 
 stages:
