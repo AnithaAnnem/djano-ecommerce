@@ -6,9 +6,10 @@ pool:
 
 variables:
   ACR_USERNAME: django1
-  dockerRegistry: $(dockerRegistry)       # defined in pipeline UI
-  dockerImageName: $(dockerImageName)     # defined in pipeline UI
+  dockerRegistry: django1.azurecr.io       # define directly or override in UI
+  dockerImageName: django                  # define directly or override in UI
   # ACR_PASSWORD is stored as a secret in the pipeline UI
+  # SONAR_HOST_URL and SONAR_TOKEN are also defined in the pipeline UI
 
 stages:
 
@@ -86,13 +87,13 @@ stages:
 
           # Debug to confirm variables are loaded
           - script: |
-              echo "dockerRegistry = '${{ variables.dockerRegistry }}'"
-              echo "dockerImageName = '${{ variables.dockerImageName }}'"
+              echo "dockerRegistry = $dockerRegistry"
+              echo "dockerImageName = $dockerImageName"
             displayName: "DEBUG DOCKER VARIABLES"
 
           # Login to ACR using your secret
           - script: |
-              echo "$(ACR_PASSWORD)" | docker login ${{ variables.dockerRegistry }} -u $(ACR_USERNAME) --password-stdin
+              echo "$ACR_PASSWORD" | docker login $dockerRegistry -u $ACR_USERNAME --password-stdin
             displayName: "Login to ACR"
 
           # Build & Push using template
