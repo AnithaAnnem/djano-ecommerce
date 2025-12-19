@@ -1,14 +1,15 @@
 steps:
+  # Debug to confirm the image name variable
   - script: |
-      echo "Registry: $dockerRegistry"
-      echo "Image: $dockerImageName"
-    displayName: Debug Docker Variables
+      echo "dockerImageName=$(dockerImageName)"
+    displayName: "DEBUG Docker Image Name"
 
+  # Build & Push Docker Image using service connection
   - task: Docker@2
     displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
-      containerRegistry: Django   # service connection name
+      containerRegistry: Django   # name of your ACR service connection
       repository: $(dockerImageName)   # repo name only, service connection handles registry
       dockerfile: Dockerfile
       tags: |
