@@ -2,6 +2,10 @@ steps:
   - script: |
       echo "Checking SonarQube Quality Gate status..."
 
+      # Debug to confirm variables are injected
+      echo "SONAR_HOST_URL = $SONAR_HOST_URL"
+      echo "SONAR_TOKEN = $SONAR_TOKEN"
+
       STATUS=$(curl -s -u $SONAR_TOKEN: \
         "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=django" \
         | jq -r '.projectStatus.status')
