@@ -1,18 +1,15 @@
 steps:
-  # Debug to confirm the image name variable
   - script: |
       echo "dockerImageName=$(dockerImageName)"
     displayName: "DEBUG Docker Image Name"
 
-  # Build & Push Docker Image using service connection
   - task: Docker@2
     displayName: Build & Push Docker Image
     inputs:
       command: buildAndPush
-      containerRegistry: Django   # name of your ACR service connection
+      containerRegistry: Django
       repository: $(dockerImageName)
       dockerfile: Dockerfile
-      arguments: --no-cache       # 🔴 IMPORTANT
+      arguments: --no-cache
       tags: |
-        latest
         $(Build.BuildId)
