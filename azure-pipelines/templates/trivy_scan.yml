@@ -4,5 +4,5 @@ steps:
       trivy image \
         --exit-code 1 \
         --severity HIGH,CRITICAL \
-        "$(dockerRegistry)/$(dockerImageName):latest"
+        "$(dockerRegistry)/$(dockerImageName):$(Build.BuildId)"
     displayName: "Trivy Scan on ACR Image"
