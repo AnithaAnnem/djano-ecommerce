@@ -9,7 +9,7 @@ steps:
     inputs:
       command: buildAndPush
       containerRegistry: Django   # service connection name
-      repository: ${{ variables.dockerImageName }}   # just the repo name, not full registry
+      repository: $(dockerImageName)   # repo name only, service connection handles registry
       dockerfile: Dockerfile
       tags: |
         latest
