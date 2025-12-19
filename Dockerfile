@@ -2,14 +2,15 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Upgrade Python tooling to fix Trivy CVEs
-RUN pip install --no-cache-dir --upgrade \
-    pip \
-    setuptools>=78.1.1 \
-    wheel
+# 1️⃣ Upgrade Python tooling FIRST
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools==78.1.1
 
+# 2️⃣ Copy requirements
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+# 3️⃣ Install app dependencies WITHOUT downgrading setuptools
+RUN pip install --no-cache-dir --no-deps -r requirements.txt \
+ || pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
