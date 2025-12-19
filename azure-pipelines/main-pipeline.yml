@@ -10,9 +10,9 @@ variables:
   dockerRegistry: django1.azurecr.io
   dockerImageName: django
 
-  # Secrets should be defined in the pipeline UI
-  ACR_PASSWORD: $(ACR_PASSWORD)
-  SONAR_TOKEN: $(SONAR_TOKEN)
+  # Secrets should be defined in the pipeline UI only
+  # Do NOT redefine them here with $(VAR) — that causes self-reference issues
+  # ACR_PASSWORD and SONAR_TOKEN must be added in the pipeline UI as secret variables
 
   # Non-secret variable can be defined inline
   SONAR_HOST_URL: http://52.233.85.186:9000
