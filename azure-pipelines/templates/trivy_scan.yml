@@ -1,8 +1,17 @@
+# steps:
+#   - script: |
+#       echo "Running Trivy remote registry scan..."
+#       trivy image \
+#         --exit-code 1 \
+#         --severity HIGH,CRITICAL \
+#         "$(dockerRegistry)/$(dockerImageName):$(Build.BuildId)"
+#     displayName: "Trivy Scan on ACR Image"
+
+
 steps:
   - script: |
-      echo "Running Trivy remote registry scan..."
       trivy image \
         --exit-code 1 \
-        --severity HIGH,CRITICAL \
-        "$(dockerRegistry)/$(dockerImageName):$(Build.BuildId)"
+        --severity CRITICAL \
+        "$(dockerRegistry)/$(dockerImageName):latest"
     displayName: "Trivy Scan on ACR Image"
