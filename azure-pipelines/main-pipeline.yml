@@ -117,4 +117,12 @@ stages:
       - job: scanDockerImage
         displayName: Scan Docker Image in ACR
         steps:
+          # Login to ACR before scanning
+          - task: Docker@2
+            displayName: Login to ACR
+            inputs:
+              command: login
+              containerRegistry: Django
+
+          # Run Trivy scan using template
           - template: templates/trivy_scan.yml
