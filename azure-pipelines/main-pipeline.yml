@@ -97,13 +97,24 @@ stages:
               echo "dockerImageName = $dockerImageName"
             displayName: "DEBUG DOCKER VARIABLES"
 
-          # Login to ACR using your secret
-          - script: |
-              echo "$ACR_PASSWORD" | docker login $dockerRegistry -u $ACR_USERNAME --password-stdin
-            displayName: "Login to ACR"
+          # Login to ACR using service connection
+          - task: Docker@2
+            displayName: Login to ACR
+            inputs:
+              command: login
+              containerRegistry: Django   # name of your ACR service connection in DevOps
 
-          # Build & Push using template
-          - template: templates/docker_push.yml
+          # Build & Push Docker Image
+          - task: Docker@2
+            displayName: Build & Push Docker Image
+            inputs:
+              command: buildAndPush
+              containerRegistry: Django   # same service connection name
+              repository: ${{ variables.dockerImageName }}
+              dockerfile: Dockerfile
+              tags: |
+                latest
+                $(Build.BuildId)
 
   # ---------------------------------------------------
   # 🛡️ Trivy Scan
