@@ -1,8 +1,10 @@
 # Temporary ignores – Django LTS upgrade planned
-
 CVE-2022-28347
 CVE-2022-34265
 CVE-2023-31047
 
 # Pillow RCE
 CVE-2023-50447
+
+# TEMPORARY – new Django CRITICAL (security approval required)
+CVE-2025-64459
