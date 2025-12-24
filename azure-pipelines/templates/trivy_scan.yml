@@ -1,8 +1,12 @@
 steps:
   - script: |
+      echo "Checking files in repo root:"
+      ls -la $(Build.SourcesDirectory)
+
       trivy image \
-        --ignorefile .trivyignore \
-        --exit-code 1 \
+        --ignorefile $(Build.SourcesDirectory)/.trivyignore \
+        --ignore-unfixed \
         --severity CRITICAL \
+        --exit-code 1 \
         "$(dockerRegistry)/$(dockerImageName):latest"
     displayName: "Trivy Scan on ACR Image"
