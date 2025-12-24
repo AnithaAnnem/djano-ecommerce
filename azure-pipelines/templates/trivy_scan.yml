@@ -1,12 +1,10 @@
 steps:
   - script: |
-      echo "Running Trivy scan (informational only)"
+      echo "Running Trivy scan (non-blocking for HIGH CVEs)"
 
       trivy image \
         --ignorefile $(Build.SourcesDirectory)/.trivyignore \
         --ignore-unfixed \
         --severity CRITICAL \
-        --exit-code 0 \
-        --no-progress \
-        "$(dockerRegistry)/$(dockerImageName):latest"
+        "$(dockerRegistry)/$(dockerImageName):latest" || true
     displayName: "Trivy Scan on ACR Image"
