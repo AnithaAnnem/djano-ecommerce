@@ -72,7 +72,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "ecomm.wsgi.application"
 
 # --------------------------------------------------
-# Database (Docker-safe)
+# Database (safe during Docker build)
 # --------------------------------------------------
 DATABASES = {
     "default": {
@@ -101,27 +101,31 @@ USE_L10N = True
 USE_TZ = True
 
 # --------------------------------------------------
-# Static & Media (FINAL FIX)
+# Static & Media (FIXED FOR YOUR ERROR)
 # --------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# IMPORTANT:
-# Do NOT define STATICFILES_DIRS in Docker
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "public/static"),
+]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# 🔥 THIS LINE FIXES YOUR ERROR 🔥
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# 🔥 PREVENTS .map FILE FAILURES 🔥
+WHITENOISE_MANIFEST_STRICT = False
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # --------------------------------------------------
-# Default primary key
+# Default PK
 # --------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --------------------------------------------------
-# Email (unchanged)
+# Email
 # --------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
