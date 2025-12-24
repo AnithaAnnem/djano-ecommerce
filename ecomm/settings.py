@@ -1,18 +1,26 @@
 from pathlib import Path
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# --------------------------------------------------
+# Base paths
+# --------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+# --------------------------------------------------
+# Security
+# --------------------------------------------------
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-c2aiz84%f580f10e374fm&5j^k22q!^%7#g+s54_lr+ql5$b&4"
+)
 
-# Quick-start development settings - unsuitable for production
-SECRET_KEY = 'django-insecure-c2aiz84%f580f10e374fm&5j^k22q!^%7#g+s54_lr+ql5$b&4'
 DEBUG = True
-ALLOWED_HOSTS = ['*']  # Allow Docker/Minikube access
+ALLOWED_HOSTS = ["*"]
 
-
-# Application definition
+# --------------------------------------------------
+# Applications
+# --------------------------------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,9 +31,12 @@ INSTALLED_APPS = [
 
     'products',
     'accounts',
-    'home'
+    'home',
 ]
 
+# --------------------------------------------------
+# Middleware
+# --------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -39,6 +50,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ecomm.urls'
 
+# --------------------------------------------------
+# Templates
+# --------------------------------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -57,8 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecomm.wsgi.application'
 
-
-# Database
+# --------------------------------------------------
+# Database (safe for Docker build)
+# --------------------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -66,8 +81,9 @@ DATABASES = {
     }
 }
 
-
+# --------------------------------------------------
 # Password validation
+# --------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -75,32 +91,38 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
+# --------------------------------------------------
 # Internationalization
+# --------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-### STATIC & MEDIA CONFIG (Corrected)
+# --------------------------------------------------
+# Static & Media (WhiteNoise)
+# --------------------------------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "public/static"),
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+# --------------------------------------------------
+# Default PK
+# --------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# EMAIL CONFIG
+# --------------------------------------------------
+# Email (unchanged)
+# --------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
