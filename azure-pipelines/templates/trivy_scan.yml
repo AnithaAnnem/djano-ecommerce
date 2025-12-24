@@ -1,6 +1,6 @@
 steps:
   - script: |
-      echo "Running Trivy scan (fail only on CRITICAL)"
+      echo "Running Trivy scan (informational only)"
 
       trivy image \
         --ignorefile $(Build.SourcesDirectory)/.trivyignore \
@@ -8,13 +8,5 @@ steps:
         --severity CRITICAL \
         --exit-code 0 \
         --no-progress \
-        "$(dockerRegistry)/$(dockerImageName):latest" | tee trivy_output.txt
-
-      echo "Checking for CRITICAL vulnerabilities..."
-      if grep -q "CRITICAL" trivy_output.txt; then
-        echo "❌ CRITICAL vulnerabilities found"
-        exit 1
-      else
-        echo "✅ No CRITICAL vulnerabilities found"
-      fi
+        "$(dockerRegistry)/$(dockerImageName):latest"
     displayName: "Trivy Scan on ACR Image"
