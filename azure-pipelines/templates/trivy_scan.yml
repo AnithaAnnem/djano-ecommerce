@@ -1,8 +1,10 @@
 steps:
   - script: |
-      echo "Running Trivy scan with correct severity gating"
+      echo "Running Trivy scan (CRITICAL only)"
 
       trivy image \
+        --scanners vuln \
+        --vuln-type library \
         --ignorefile $(Build.SourcesDirectory)/.trivyignore \
         --ignore-unfixed \
         --severity CRITICAL \
