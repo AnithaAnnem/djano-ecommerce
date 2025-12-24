@@ -3,18 +3,16 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # -----------------------------
-# Environment variables
+# Environment
 # -----------------------------
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=ecomm.settings
-ENV DJANGO_COLLECTSTATIC=1
 
 # -----------------------------
-# System dependencies (minimal)
+# System deps
 # -----------------------------
-RUN apt-get update && apt-get install -y \
-    build-essential \
+RUN apt-get update && apt-get install -y build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------
@@ -23,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools==78.1.1
 
 # -----------------------------
-# Install dependencies
+# Install deps
 # -----------------------------
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -34,13 +32,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # -----------------------------
-# Collect static safely
+# 🔥 FIX: IGNORE .map FILES 🔥
 # -----------------------------
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput --ignore "*.map"
 
 # -----------------------------
 # Runtime
 # -----------------------------
 EXPOSE 8000
-
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "ecomm.wsgi:application"]
