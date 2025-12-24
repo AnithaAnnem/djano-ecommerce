@@ -1,7 +1,6 @@
 steps:
   - script: |
-      echo "Checking files in repo root:"
-      ls -la $(Build.SourcesDirectory)
+      echo "Running Trivy scan with correct severity gating"
 
       trivy image \
         --ignorefile $(Build.SourcesDirectory)/.trivyignore \
